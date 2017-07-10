@@ -23,7 +23,7 @@ function draw() {
     for (var j = 0; j < rows; j++) {
       grid[i][j].show();
       if (!grid[i][j].revealed && !grid[i][j].marked ||
-         (grid[i][j].marked && !grid[i][j].bomb)) {
+        (grid[i][j].marked && !grid[i][j].bomb)) {
         gameWon = false;
       }
     }
@@ -57,7 +57,7 @@ function draw() {
 function startGame(click) {
   var canvas = createCanvas(501, 501);
   if (click != null) {
-    switch(click.srcElement.innerText) {
+    switch (click.srcElement.innerText) {
       case "easy":
         resizeCanvas(251, 251);
         break;
@@ -86,8 +86,8 @@ function startGame(click) {
 function mousePressed() {
   for (var i = 0; i < cols; i++) {
     for (var j = 0; j < rows; j++) {
-      if (mouseX > grid[i][j].x && mouseX < grid[i][j].x + cSize
-      && mouseY > grid[i][j].y && mouseY < grid[i][j].y + cSize) {
+      if (mouseX > grid[i][j].x && mouseX < grid[i][j].x + cSize &&
+        mouseY > grid[i][j].y && mouseY < grid[i][j].y + cSize) {
         if (mouseButton == LEFT) {
           grid[i][j].reveal(i, j);
         }
