@@ -9,7 +9,12 @@ function Cell(x, y, b) {
 
 Cell.prototype.show = function() {
   strokeWeight(2);
-  fill(255);
+  if (this.revealed) {
+    fill(200);
+  }
+  else {
+    fill(175);
+  }
   rect(this.x, this.y, cSize, cSize);
   if (this.revealed) {
     if (this.bomb) {
@@ -18,7 +23,7 @@ Cell.prototype.show = function() {
     }
     else if (this.neighbombs != 0) {
       fill(0);
-      textSize(20);
+      textSize(28);
       textAlign(CENTER);
       text(this.neighbombs, this.x + cSize / 2, this.y + cSize / 1.5);
     }

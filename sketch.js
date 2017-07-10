@@ -3,6 +3,7 @@ var cols;
 var rows;
 var cSize;
 var gameOver;
+var gameWon;
 
 function setup() {
   var easyButton = createButton("easy");
@@ -17,11 +18,17 @@ function setup() {
 }
 
 function draw() {
+  gameWon = true;
   for (var i = 0; i < cols; i++) {
     for (var j = 0; j < rows; j++) {
       grid[i][j].show();
+      if (!grid[i][j].revealed && !grid[i][j].marked ||
+         (grid[i][j].marked && !grid[i][j].bomb)) {
+        gameWon = false;
+      }
     }
   }
+
   if (gameOver) {
     for (var i = 0; i < cols; i++) {
       for (var j = 0; j < rows; j++) {
@@ -32,10 +39,18 @@ function draw() {
       }
     }
     noLoop();
-    fill(255, 0, 0);
+    fill(200, 0, 0);
     textSize(42);
     textAlign(CENTER);
     text("GAME OVER", width / 2, height / 2);
+  }
+
+  if (gameWon) {
+    noLoop();
+    fill(0, 150, 0);
+    textSize(42);
+    textAlign(CENTER);
+    text("YOU WON", width / 2, height / 2);
   }
 }
 
@@ -63,6 +78,7 @@ function startGame(click) {
   cols = floor(width / cSize);
   rows = floor(height / cSize);
   gameOver = false;
+  gameWon = false;
   makeGrid();
   loop();
 }
@@ -91,7 +107,7 @@ function makeGrid() {
   for (var i = 0; i < cols; i++) {
     for (var j = 0; j < rows; j++) {
       var bomb = false;
-      if (random() < 0.25) {
+      if (random() < 0.20) {
         bomb = true;
       }
       grid[i][j] = new Cell(i * cSize, j * cSize, bomb);
