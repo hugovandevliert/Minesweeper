@@ -1,14 +1,14 @@
 var grid;
 var cols;
 var rows;
-var cellSize;
+var cSize;
 
 function setup() {
   createCanvas(501, 501);
-  cellSize = 50;
-  cols = floor(width / cellSize);
-  rows = floor(height / cellSize);
-  grid = makeGrid();
+  cSize = 50;
+  cols = floor(width / cSize);
+  rows = floor(height / cSize);
+  makeGrid();
 }
 
 function draw() {
@@ -20,15 +20,53 @@ function draw() {
 }
 
 function makeGrid() {
-  var arr = [cols];
+  grid = [cols];
   for (var i = 0; i < cols; i++) {
-    arr[i] = [rows];
+    grid[i] = [rows];
   }
-
   for (var i = 0; i < cols; i++) {
     for (var j = 0; j < rows; j++) {
-      arr[i][j] = new Cell(i * cellSize, j * cellSize, true);
+      var bomb = false;
+      if (random() < 0.25) {
+        bomb = true;
+      }
+      grid[i][j] = new Cell(i * cSize, j * cSize, bomb);
     }
   }
-  return arr;
+  for (var i = 0; i < cols; i++) {
+    for (var j = 0; j < rows; j++) {
+      calculateBombs(i, j);
+    }
+  }
+}
+
+function calculateBombs(i, j) {
+  var nbombs = 0;
+
+  if (i > 0 && j > 0 && grid[i - 1][j - 1].bomb) {
+    nbombs++;
+  }
+  if (j > 0 && grid[i][j - 1].bomb) {
+    nbombs++;
+  }
+  if (j > 0 && i < cols - 1 && grid[i + 1][j - 1].bomb) {
+    nbombs++;
+  }
+  if (i > 0 && grid[i - 1][j].bomb) {
+    nbombs++;
+  }
+  if (i < cols - 1 && grid[i + 1][j].bomb) {
+    nbombs++;
+  }
+  if (i > 0 && j < rows - 1 && grid[i - 1][j + 1].bomb) {
+    nbombs++;
+  }
+  if (j < rows - 1 && grid[i][j + 1].bomb) {
+    nbombs++;
+  }
+  if (i < cols - 1 && j < rows - 1 && grid[i + 1][j + 1].bomb) {
+    nbombs++;
+  }
+
+  grid[i][j].neighbombs = nbombs;
 }
