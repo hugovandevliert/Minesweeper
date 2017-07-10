@@ -3,12 +3,16 @@ var cols;
 var rows;
 var cSize;
 var gameOver;
-var restartButton;
 
 function setup() {
-  restartButton = createButton("restart");
-  restartButton.mousePressed(startGame);
-  restartButton.position(10, 10);
+  var easyButton = createButton("easy");
+  easyButton.mousePressed(startGame);
+  var mediumButton = createButton("medium");
+  mediumButton.mousePressed(startGame);
+  var hardButton = createButton("hard");
+  hardButton.mousePressed(startGame);
+  var extremeButton = createButton("extreme");
+  extremeButton.mousePressed(startGame);
   startGame();
 }
 
@@ -29,17 +33,33 @@ function draw() {
     }
     noLoop();
     fill(255, 0, 0);
-    textSize(60);
+    textSize(42);
     textAlign(CENTER);
     text("GAME OVER", width / 2, height / 2);
   }
 }
 
-function startGame() {
-  clear();
+function startGame(click) {
   var canvas = createCanvas(501, 501);
+  if (click != null) {
+    switch(click.srcElement.innerText) {
+      case "easy":
+        resizeCanvas(251, 251);
+        break;
+      case "medium":
+        resizeCanvas(501, 501);
+        break;
+      case "hard":
+        resizeCanvas(751, 751);
+        break;
+      case "extreme":
+        resizeCanvas(1000, 1000);
+        break;
+    }
+  }
+  clear();
   canvas.position(10, 50);
-  cSize = floor(width / 10);
+  cSize = 50;
   cols = floor(width / cSize);
   rows = floor(height / cSize);
   gameOver = false;
