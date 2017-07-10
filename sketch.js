@@ -2,19 +2,63 @@ var grid;
 var cols;
 var rows;
 var cSize;
+var gameOver;
+var restartButton;
 
 function setup() {
-  createCanvas(501, 501);
-  cSize = 50;
-  cols = floor(width / cSize);
-  rows = floor(height / cSize);
-  makeGrid();
+  restartButton = createButton("restart");
+  restartButton.mousePressed(startGame);
+  restartButton.position(10, 10);
+  startGame();
 }
 
 function draw() {
   for (var i = 0; i < cols; i++) {
     for (var j = 0; j < rows; j++) {
       grid[i][j].show();
+    }
+  }
+  if (gameOver) {
+    for (var i = 0; i < cols; i++) {
+      for (var j = 0; j < rows; j++) {
+        if (grid[i][j].bomb) {
+          grid[i][j].reveal(i, j);
+          grid[i][j].show();
+        }
+      }
+    }
+    noLoop();
+    fill(255, 0, 0);
+    textSize(60);
+    textAlign(CENTER);
+    text("GAME OVER", width / 2, height / 2);
+  }
+}
+
+function startGame() {
+  clear();
+  var canvas = createCanvas(501, 501);
+  canvas.position(10, 50);
+  cSize = floor(width / 10);
+  cols = floor(width / cSize);
+  rows = floor(height / cSize);
+  gameOver = false;
+  makeGrid();
+  loop();
+}
+
+function mousePressed() {
+  for (var i = 0; i < cols; i++) {
+    for (var j = 0; j < rows; j++) {
+      if (mouseX > grid[i][j].x && mouseX < grid[i][j].x + cSize
+      && mouseY > grid[i][j].y && mouseY < grid[i][j].y + cSize) {
+        if (mouseButton == LEFT) {
+          grid[i][j].reveal(i, j);
+        }
+        if (mouseButton == RIGHT) {
+          grid[i][j].mark();
+        }
+      }
     }
   }
 }
